@@ -1,0 +1,75 @@
+{
+  "name": "everything-search-and-open",
+  "displayName": "Everything Search and Open",
+  "description": "Search file via Everything and open",
+  "version": "0.0.1",
+  "publisher": "kraml",
+  "engines": {
+    "vscode": "^1.11.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:eso.searchEverything",
+    "onCommand:eso.searchEverythingRe",
+    "onCommand:eso.searchEverythingFn",
+    "onCommand:eso.searchEverythingFnRe"
+  ],
+  "main": "./extension",
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "Configuration for Everything Search and Open extension",
+      "properties": {
+        "eso.host": {
+          "type": "string",
+          "default": "127.0.0.1",
+          "description": "Host address Everything listens on for HTTP protocol."
+        },
+        "eso.port": {
+          "type": "integer",
+          "default": 4321,
+          "description": "Port number Everything listens on for HTTP protocol."
+        },
+        "eso.sort": {
+          "type": "string",
+          "default": "path",
+          "description": "How search results from Everything are sorted, can be one of 'name', 'path', 'date_modified', 'size'"
+        }
+      }
+    },
+    "commands": [{
+      "command": "eso.searchEverything",
+      "title": "Search full path name in Everything",
+      "category": "ESO"
+    }, {
+      "command": "eso.searchEverythingRe",
+      "title": "Search full path name in Everything with regex",
+      "category": "ESO"
+    }, {
+      "command": "eso.searchEverythingFn",
+      "title": "Search file name in Everything",
+      "category": "ESO"
+    }, {
+      "command": "eso.searchEverythingFnRe",
+      "title": "Search file name in Everything with regex",
+      "category": "ESO"
+    }],
+    "keybindings": [{
+      "command": "eso.searchEverything",
+      "key": "ctrl+k ctrl+e"
+    }]
+  },
+  "scripts": {
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "vscode": "^1.0.0",
+    "mocha": "^2.3.3",
+    "eslint": "^3.6.0",
+    "@types/node": "^6.0.40",
+    "@types/mocha": "^2.2.32"
+  }
+}
