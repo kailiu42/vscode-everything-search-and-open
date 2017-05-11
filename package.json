@@ -1,8 +1,8 @@
 {
-  "name": "everything-search-and-open",
+  "name": "vscode-everything-search-and-open",
   "displayName": "Everything Search and Open",
   "description": "Search file via Everything and open",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "publisher": "kraml",
   "engines": {
     "vscode": "^1.11.0"
