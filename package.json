@@ -4,6 +4,10 @@
   "description": "Search file via Everything and open",
   "version": "0.1.0",
   "publisher": "kraml",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kraml/vscode-everything-search-and-open.git"
+  },
   "engines": {
     "vscode": "^1.11.0"
   },
