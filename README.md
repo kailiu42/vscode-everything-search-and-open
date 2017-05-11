@@ -1,65 +1,71 @@
-# everything-search-and-open README
+# Everything Search and Open for Visual Studio Code
 
-This is the README for your extension "everything-search-and-open". After writing up a brief description, we recommend including the following sections.
+This is an extension for Microsoft Visual Studio Code. It allows searching file name in Everthing and select a file to open in the result list.
 
-## Features
+[Everything](https://www.voidtools.com/) is an terrific file searching tool for Windows platform. It is super fast, small and free to use.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+As Evertying is only available on Windows, this extension supports Windows only.
 
-For example if there is an image subfolder under your extension project workspace:
+## How to Use
+-------------
 
-\!\[feature X\]\(images/feature-x.png\)
+### Quick start
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+* Install and configure Everthing first, see below.
+* Press Ctrl+K, Ctrl+E to activate the file name input box.
+* Type in the file name you would like to search. Any part of the full path can be used to search. Regular expression is turned off by default.
+* Press Enter after input the file name, a list of files with their path information will be shown.
+* Select the one you are looking for from the list and it will be opened in VS Code.
+
+### Use Command Palette
+
+This extension registers four commands.
+
+#### eso.searchEverything
+
+Search full path name in Everything, without regular expression support.
+
+This one is bind to keyboard shortcut Ctrl+K, Ctrl+E by default.
+
+#### eso.searchEverythingRe
+
+Search full path name in Everything, supports regular expression.
+
+#### eso.searchEverythingFn
+
+Search only file name in Everything, without regular expression support.
+
+#### eso.searchEverythingFnRe
+
+Search only file name in Everything, supports regular expression.
 
 ## Requirements
+---------------
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+Everthing tool must be installed and HTTP support turned on.
+
+Please consult everthing [website](https://www.voidtools.com/) for download and installation instructions.
+
+HTTP support can be enabled in Options -> HTTP Server -> Enable HTTP Server.
+
+Bind to Interface option should be set to 127.0.0.1 for security reason.
+
+Listen to Port should be set to a spare port number on your computer. This extension by default use port 4321 to conenct to Everthing HTTP server. You can change that in VS Code settings. Make sure the port number in VS Code and Everything option are the same.
+
+Other Everthing HTTP Server options could be left empty.
 
 ## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
+---------------------
 
 This extension contributes the following settings:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
+* `eso.host`: IP address where Everthing listens on, defaults to 127.0.0.1
+* `eso.port`: Port number where Everthing listens on, defaults to 4321
+* `eso.sort`: How search results from Everything are sorted, can be one of 'name', 'path', 'date_modified', 'size'
 
 ## Release Notes
+----------------
 
-Users appreciate release notes as you update your extension.
+### 0.1.0
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on OSX or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (OSX) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Initial release.
