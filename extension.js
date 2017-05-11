@@ -35,9 +35,25 @@ exports.deactivate = deactivate;
 
 function everythingSearchAndOpen(option) {
   askForSearchTerm(option)
-    .then(str         => searchInEverything(option, str))
-    .then(es_response => selectFile(es_response.results))
-    .then(file        => openFile(file));
+    .then(
+      str => {
+        if (str !== undefined) { // User cancelled input
+          searchInEverything(option, str)
+            .then(
+              es_response => {
+                selectFile(es_response.results)
+                  .then(
+                    file => {
+                      if (file !== undefined) { // User cancelled list selection
+                        openFile(file);
+                      }
+                    },
+                    e => vscode.window.showErrorMessage('Select file failed: ' + e.message));
+              },
+              e => vscode.window.showErrorMessage('Search in Everything failed: ' + e.message));
+        }
+      },
+      e => vscode.window.showErrorMessage('Input failed: ' + e.message));
 }
 
 
