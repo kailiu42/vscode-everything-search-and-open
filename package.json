@@ -15,10 +15,11 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:eso.searchEverything",
-    "onCommand:eso.searchEverythingRe",
-    "onCommand:eso.searchEverythingFn",
-    "onCommand:eso.searchEverythingFnRe"
+    "onCommand:eso.search",
+    "onCommand:eso.searchRe",
+    "onCommand:eso.searchFn",
+    "onCommand:eso.searchFnRe",
+    "onCommand:eso.searchWS"
   ],
   "main": "./extension",
   "contributes": {
@@ -43,37 +44,49 @@
         }
       }
     },
-    "commands": [{
-      "command": "eso.searchEverything",
-      "title": "Search full path name in Everything",
-      "category": "ESO"
-    }, {
-      "command": "eso.searchEverythingRe",
-      "title": "Search full path name in Everything with regex",
-      "category": "ESO"
-    }, {
-      "command": "eso.searchEverythingFn",
-      "title": "Search file name in Everything",
-      "category": "ESO"
-    }, {
-      "command": "eso.searchEverythingFnRe",
-      "title": "Search file name in Everything with regex",
-      "category": "ESO"
-    }],
-    "keybindings": [{
-      "command": "eso.searchEverything",
-      "key": "ctrl+k ctrl+e"
-    }]
+    "commands": [
+      {
+        "command": "eso.search",
+        "title": "Search full path name in Everything",
+        "category": "ESO"
+      },
+      {
+        "command": "eso.searchRe",
+        "title": "Search full path name in Everything with regex",
+        "category": "ESO"
+      },
+      {
+        "command": "eso.searchFn",
+        "title": "Search file name in Everything",
+        "category": "ESO"
+      },
+      {
+        "command": "eso.searchFnRe",
+        "title": "Search file name in Everything with regex",
+        "category": "ESO"
+      },
+      {
+        "command": "eso.searchWS",
+        "title": "Search full path name in Everything, workspace files only",
+        "category": "ESO"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "eso.search",
+        "key": "ctrl+k ctrl+e"
+      }
+    ]
   },
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
-    "vscode": "^1.0.0",
+    "@types/mocha": "^2.2.48",
+    "@types/node": "^6.0.102",
+    "eslint": "^3.19.0",
     "mocha": "^2.3.3",
-    "eslint": "^3.6.0",
-    "@types/node": "^6.0.40",
-    "@types/mocha": "^2.2.32"
+    "vscode": "^1.1.13"
   }
 }

@@ -4,23 +4,34 @@ const path = require('path');
 let config = vscode.workspace.getConfiguration('eso');
 
 function activate(context) {
-  let Disposable = vscode.commands.registerCommand('eso.searchEverything', () => {
-    everythingSearchAndOpen({ fullpath: true, regex: false });
+  let Disposable = vscode.commands.registerCommand('eso.search', () => {
+    everythingSearchAndOpen({ fullpath: true, regex: false, inWorkspace: false });
   });
 
-  let ReDisposable = vscode.commands.registerCommand('eso.searchEverythingRe', () => {
-    everythingSearchAndOpen({ fullpath: true, regex: true });
+  let ReDisposable = vscode.commands.registerCommand('eso.searchRe', () => {
+    everythingSearchAndOpen({ fullpath: true, regex: true, inWorkspace: false });
   });
 
-  let FnDisposable = vscode.commands.registerCommand('eso.searchEverythingFn', () => {
-    everythingSearchAndOpen({ fullpath: false, regex: false });
+  let FnDisposable = vscode.commands.registerCommand('eso.searchFn', () => {
+    everythingSearchAndOpen({ fullpath: false, regex: false, inWorkspace: false });
   });
 
-  let FnReDisposable = vscode.commands.registerCommand('eso.searchEverythingFnRe', () => {
-    everythingSearchAndOpen({ fullpath: false, regex: true });
+  let FnReDisposable = vscode.commands.registerCommand('eso.searchFnRe', () => {
+    everythingSearchAndOpen({ fullpath: false, regex: true, inWorkspace: false });
   });
 
-  context.subscriptions.push(Disposable, ReDisposable, FnDisposable, FnReDisposable);
+  // Everthing does not accept a parameter of "search root", the "search
+  // workspace files only" feature actually prepends workspace root folder
+  // names to the user search pattern before passing it to Everything.
+  // Due to this the multi-root workspace feature conflicts with regex search
+  // as there is no way to construct a (regex) query string which includes all the
+  // workspace roots and user search patterns. Thus only non-regex search for
+  // workspace files is supported, as non-regex search support the OR(|) operator.
+  let WSDisposable = vscode.commands.registerCommand('eso.searchWS', () => {
+    everythingSearchAndOpen({ fullpath: true, regex: false, inWorkspace: true });
+  });
+
+  context.subscriptions.push(Disposable, ReDisposable, FnDisposable, FnReDisposable, WSDisposable);
 
   context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(() => {
     config = vscode.workspace.getConfiguration('eso');
@@ -60,10 +71,35 @@ function everythingSearchAndOpen(option) {
 function askForSearchTerm(option) {
   let input_options = {
     ignoreFocusOut: true,
-    placeHolder: 'Type ' + (option.fullpath ? 'full path' : 'file') + ' name to search' + (option.regex ? ', support regular expression' : '')
+    placeHolder: 'Type ' +
+      (option.fullpath ? 'full path' : 'file') + ' name to search' +
+      (option.regex ? ', support regular expression' : '') +
+      (option.inWorkspace ? ', workspace files only' : '')
   };
 
   return vscode.window.showInputBox(input_options);
+}
+
+
+function buildSearchStr(option, str) {
+  if (!option.inWorkspace) { // Not searching workspace files only
+    return str;
+  } else {
+    let wsf = vscode.workspace.workspaceFolders;
+
+    if (wsf === undefined) { // No folder opened in workspace, fall back to full filesystem search
+      return str;
+    } else {
+      let patterns = [];
+      let userPattern = '\\*' + str + '*';
+
+      wsf.forEach((element) => {
+        patterns.push(element.uri.fsPath + userPattern);
+      });
+
+      return patterns.join(' | ');
+    }
+  }
 }
 
 
@@ -77,7 +113,7 @@ function searchInEverything(option, str) {
       'sort=' + config.sort,
       'path=' + (option.fullpath ? 1 : 0),
       'regex=' + (option.regex ? 1 : 0),
-      's=' + str
+      's=' + buildSearchStr(option, str)
     ].join('&'))
   };
 
